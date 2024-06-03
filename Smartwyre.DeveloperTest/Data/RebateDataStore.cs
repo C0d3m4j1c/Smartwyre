@@ -1,17 +1,23 @@
-﻿using Smartwyre.DeveloperTest.Types;
+﻿using System.Collections.Generic;
+using Smartwyre.DeveloperTest.Types;
 
-namespace Smartwyre.DeveloperTest.Data;
-
-public class RebateDataStore
+public class RebateDataStore : IRebateDataStore
 {
-    public Rebate GetRebate(string rebateIdentifier)
+    private readonly Dictionary<string, Rebate> _rebates = new Dictionary<string, Rebate>();
+
+    public void AddRebate(string rebateIdentifier, Rebate rebate)
     {
-        // Access database to retrieve account, code removed for brevity 
-        return new Rebate();
+        _rebates[rebateIdentifier] = rebate;
     }
 
-    public void StoreCalculationResult(Rebate account, decimal rebateAmount)
+    public Rebate GetRebate(string rebateIdentifier)
     {
-        // Update account in database, code removed for brevity
+        _rebates.TryGetValue(rebateIdentifier, out var rebate);
+        return rebate;
+    }
+
+    public void StoreCalculationResult(Rebate rebate, decimal rebateAmount)
+    {
+        // Implement the logic to store the result of the rebate calculation.
     }
 }
