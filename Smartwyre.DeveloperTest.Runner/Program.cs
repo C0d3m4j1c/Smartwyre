@@ -35,7 +35,7 @@ namespace Smartwyre.DeveloperTest.Runner
 
                 Console.Write("Enter Product Price: ");
                 var priceInput = Console.ReadLine();
-                if (!decimal.TryParse(percentajeInput, out var price))
+                if (!decimal.TryParse(priceInput, out var price))
                 {
                     Console.WriteLine("Invalid amount. Please enter a valid decimal.");
                     return;
@@ -59,19 +59,50 @@ namespace Smartwyre.DeveloperTest.Runner
                     new AmountPerUomStrategy()
                 };
 
+                // Hey this are the types of incentives
+                // Press 1 to select FixedRateRebate
+                // ...
+
+                //castFunctionToPrintMenuOfIncentives();
+
+                //Function that will iterate all the enums to create the menu
+                //foreach(value of values)
+                //Console.WriteLine($"Press {value.toInt} to select {value.name})
+
+                Console.WriteLine("These are the types of Rebate incentives, select one");
+                Console.WriteLine("Press 0 if you want to FixedRateRebate");
+                Console.WriteLine("Press 1 if you want to AmountPerUom");
+                Console.WriteLine("Press 2 if you want to FixedCashAmount");
+                var incentiveInput = Console.ReadLine();
+                if (!int.TryParse(incentiveInput, out var incentiveType))
+                {
+                    Console.WriteLine("Invalid type. Please enter a valid {0..2} value.");
+                    return;
+                }
 
                 //Hardcoding the Incentive for simplicity
                 var rebate = new Rebate
                 {
-                    Incentive = IncentiveType.FixedRateRebate,
+                    Incentive = (IncentiveType) incentiveType,
                     Percentage = percentaje,
                     Amount = amount
                 };
 
-                //Hardcoding the Incentive for simplicity
+                //Hardcoding the Incentive for simplicity  0 -- Bitwise 1 -- next 0 << 2 2 
+                SupportedIncentiveType supportedIncentiveType = SupportedIncentiveType.FixedRateRebate;
+                switch(incentiveType)
+                {
+                    case 0: supportedIncentiveType = SupportedIncentiveType.FixedRateRebate;
+                        break;
+                    case 1: supportedIncentiveType = SupportedIncentiveType.AmountPerUom;
+                        break;
+                    case 2: supportedIncentiveType = SupportedIncentiveType.FixedCashAmount;
+                        break;
+                }
+
                 var product = new Product
                 {
-                    SupportedIncentives = SupportedIncentiveType.FixedRateRebate,
+                    SupportedIncentives = supportedIncentiveType,
                     Price = price 
                 };
 
